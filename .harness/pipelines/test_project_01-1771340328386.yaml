@@ -1,0 +1,77 @@
+pipeline:
+  identifier: Build_balazs_wagner_test_project_01_1771340596054
+  name: Build test_project_01
+  orgIdentifier: default
+  projectIdentifier: project_02
+  properties:
+    ci:
+      codebase:
+        build: <+input>
+        connectorRef: account.Github
+        repoName: balazs-wagner/test_project_01
+  stages:
+    - stage:
+        identifier: build
+        name: build
+        spec:
+          caching:
+            enabled: true
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  identifier: installdependencies
+                  name: install dependencies
+                  spec:
+                    command: npm install
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: test
+                  name: test
+                  spec:
+                    command: npm run test
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: runlinter
+                  name: run linter
+                  spec:
+                    command: |-
+                      pip install flake8
+                      flake8 --config=.flake8 .
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: installdependencies1
+                  name: install dependencies
+                  spec:
+                    command: pip install tox
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: runtests
+                  name: run tests
+                  spec:
+                    command: tox
+                    reports:
+                      spec:
+                        paths:
+                          - "**/*.xml"
+                      type: JUnit
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: getcoverage
+                  name: get coverage
+                  spec:
+                    command: tox -e coverage
+                  timeout: ""
+                  type: Run
+          platform:
+            arch: Amd64
+            os: Linux
+          runtime:
+            spec: {}
+            type: Cloud
+        type: CI
