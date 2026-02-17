@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_balazs_wagner_test_project_01_1771340596054-pr-trigger-input-set
+  identifier: Build_balazs_wagner_test_project_01_1771340596054prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: project_02
+  pipeline:
+    identifier: Build_balazs_wagner_test_project_01_1771340596054
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
